@@ -37,7 +37,7 @@ app.use(require('./routes/router'));
 
 
 //servidor activo
-const port = 8000;
+const port =process.env.PORT || 8000;
 app.listen(port, ()=>{
     console.log('servidor activo en puerto 8000')
 })

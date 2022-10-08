@@ -20,6 +20,13 @@ app.use(express.urlencoded({extended: true}));
 
 passport.use(LocalStrategy);
 
+passport.serializeUser((user, done) => {
+    done(null, JSON.stringify(user));
+  });
+  
+  passport.deserializeUser((user, done) => {
+    done(null, JSON.parse(user));
+  });
 
 app.use(passport.initialize())
 app.use(passport.session());

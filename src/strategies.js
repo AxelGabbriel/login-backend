@@ -5,10 +5,10 @@ const helpers =require('./helpers')
 
 const config={
   
-  host:'Localhost',
-  user:'postgres',
-  database:'KRAKEN',
-  password:'axel'
+  connectionString: process.env.DATABASE_URL,
+  max:500,
+  min:100,
+  ssl:{rejectUnauthorized:false}
   
 };
   
@@ -17,7 +17,7 @@ const config={
   const LocalStrategy = new Strategy(
   {
     usernameField: 'username',
-    passwordField: 'password'
+    passwordField: 'password',
   },
   async (username, password, done) => {
     try {
@@ -26,14 +26,18 @@ const config={
         username:username,
         clave:password
       }
-      const result= await pool.query('SELECT* FROM usuario WHERE username=$1',[user.username])
-      if(result.rows.length>0){
+     //console.log(`SELECT * FROM usuario WHERE username='${user.username}'`)
+      //const result= await pool.query(`SELECT * FROM usuario WHERE username='${user.username}'`)
+      const result= await pool.query('SELECT * FROM usuario WHERE username=$1',[user.username])
+      
+      console.log(result.rows[0])
+      if(result.rowCount>0){
          const newuser =result.rows[0];
          const validpassword= await helpers.compararclave(user.clave,newuser.contraseña) 
         
          if(validpassword){
           
-          done(null,false,console.log('bienvenido'))
+          done(null,newuser,console.log('bienvenido'))
           
 
 

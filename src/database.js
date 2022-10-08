@@ -2,15 +2,12 @@ const {Pool}= require('pg');
 const helpers= require('./helpers')
 const config={
     
-  host:'Localhost',
-  user:'postgres',
-  database:'KRAKEN',
-  password:'axel'
+  connectionString: process.env.DATABASE_URL,
+  max:500,
+  min:100,
+  ssl:{rejectUnauthorized:false}
 
-  /*connectionString: process.env.DATABASE_URL,
-    max:500,
-    min:100,
-    ssl:{rejectUnauthorized:false}*/
+  
 };
 
 const pool = new Pool(config);
